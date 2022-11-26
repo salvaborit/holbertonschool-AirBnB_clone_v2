@@ -13,7 +13,8 @@ from sqlalchemy.orm.session import sessionmaker, Session
 import os
 
 
-classes = {'State': State, 'City': City}
+classes = {'State': State, 'City': City, 'User': User}
+
 
 class DBStorage:
     """ Database storage class """
@@ -31,7 +32,6 @@ class DBStorage:
         self.__engine = create_engine(
             f"mysql+mysqldb://{user}:{password}@{host}/{database}",
             pool_pre_ping=True)
-
 
     def all(self, cls=None):
         """ Returns objects stored in db """
