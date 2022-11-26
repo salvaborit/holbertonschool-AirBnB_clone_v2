@@ -1,16 +1,19 @@
 #!/usr/bin/python3
 """ Module for db storage engine """
-from sqlalchemy import create_engine
-from sqlalchemy.orm import scoped_session
-from sqlalchemy.orm import sessionmaker
-import os
 from models.base_model import BaseModel, Base
 from models.user import User
-from models.place import Place
 from models.state import State
 from models.city import City
 from models.amenity import Amenity
+from models.place import Place
 from models.review import Review
+from sqlalchemy import create_engine
+from sqlalchemy.orm import scoped_session
+from sqlalchemy.orm.session import sessionmaker, Session
+import os
+
+
+classes = {'State': State, 'City': City}
 
 class DBStorage:
     """ Database storage class """
@@ -25,41 +28,38 @@ class DBStorage:
         database = os.getenv('HBNB_MYSQL_DB')
         mode = os.getenv('HBNB_ENV')
 
-        print("init db")
-        DBStorage.__engine = create_engine(
+        self.__engine = create_engine(
             f"mysql+mysqldb://{user}:{password}@{host}/{database}",
             pool_pre_ping=True)
 
 
     def all(self, cls=None):
         """ Returns objects stored in db """
+        obj_dic = {}
+
         if cls:
-            res = self.__session.query(cls)
+            for row in self.__session.query(cls).all():
+                obj_dic[f"{type(row).__name__}.{row.id}"] = row
         else:
-            res = self.__session.query(
-                BaseModel, User, Place,
-                State, City, Amenity, Review)
-        
-        return res
+            for model in classes.values():
+                for row in self.__session.query(model):
+                    obj_dic[f"{type(row).__name__}.{row.id}"] = row
+        return obj_dic
 
     def new(self, obj):
         """ Adds object to session """
         if obj is None:
             return
-        DBStorage.__session.add(obj)
+        self.__session.add(obj)
 
     def save(self):
         """ Commits current changes in session """
-        DBStorage.__session.commit()
+        self.__session.commit()
 
     def reload(self):
         """ Reloads """
-        session_factory = sessionmaker(
-            bind=DBStorage.__engine,
+        Base.metadata.create_all(self.__engine)
+        session = sessionmaker(
+            bind=self.__engine,
             expire_on_commit=False)
-        Session = scoped_session(session_factory)
-        DBStorage.__session = Session()
-        Base.metadata.create_all(DBStorage.__engine)
-
-
-
+        self.__session = scoped_session(session)
