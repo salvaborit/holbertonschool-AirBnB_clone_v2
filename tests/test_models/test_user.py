@@ -7,28 +7,23 @@ from models.user import User
 class test_User(test_basemodel):
     """ """
 
-    def __init__(self, *args, **kwargs):
+    def setUp(self):
         """ """
-        super().__init__(*args, **kwargs)
-        self.name = "User"
-        self.value = User
+        self.user = User(email='sba@hbtn.com', password='pwd',
+                         first_name='Salvador', last_name='Borit')
 
     def test_first_name(self):
         """ """
-        new = self.value()
-        self.assertEqual(type(new.first_name), str)
+        self.assertEqual(type(self.user.first_name), str)
 
     def test_last_name(self):
         """ """
-        new = self.value()
-        self.assertEqual(type(new.last_name), str)
+        self.assertEqual(type(self.user.last_name), str)
 
     def test_email(self):
         """ """
-        new = self.value()
-        self.assertEqual(type(new.email), str)
+        self.assertEqual(type(self.user.email), str)
 
     def test_password(self):
         """ """
-        new = self.value()
-        self.assertEqual(type(new.password), str)
+        self.assertEqual(type(self.user.password), str)
