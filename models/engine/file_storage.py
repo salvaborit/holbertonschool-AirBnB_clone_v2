@@ -1,9 +1,11 @@
 #!/usr/bin/python3
 """This module defines a class to manage file storage for hbnb clone"""
+
+
 import json
 
 
-class FileStorage:
+class FileStorage():
     """This class manages storage of hbnb models in JSON format"""
     __file_path = 'file.json'
     __objects = {}
@@ -50,10 +52,10 @@ class FileStorage:
         from models.review import Review
 
         classes = {
-                    'BaseModel': BaseModel, 'User': User, 'Place': Place,
-                    'State': State, 'City': City, 'Amenity': Amenity,
-                    'Review': Review
-                  }
+            'BaseModel': BaseModel, 'User': User, 'Place': Place,
+            'State': State, 'City': City, 'Amenity': Amenity,
+            'Review': Review
+        }
         try:
             temp = {}
             with open(FileStorage.__file_path, 'r') as f:
