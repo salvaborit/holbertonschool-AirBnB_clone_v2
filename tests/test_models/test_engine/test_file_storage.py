@@ -107,3 +107,23 @@ class test_fileStorage(unittest.TestCase):
         from models.engine.file_storage import FileStorage
         print(type(storage))
         self.assertEqual(type(storage), FileStorage)
+
+    def test_create_state(self):
+        """ State creation """
+        from models.state import State
+        state = State(name='Florida')
+        self.assertEqual(str(state.name), 'Florida')
+
+    def test_create_City(self):
+        """ City creation (in a state) """
+        from models.state import State
+        from models.city import City
+        state = State(name='Florida')
+        city = City(name="Miami", state_id=state.id)
+        self.assertEqual(city.name, 'Miami')
+
+    def test_create_User(self):
+        """ User creation """
+        from models.user import User
+        user = User(email='sba@hbtn.com', password='pwd')
+        self.assertEqual(user.email, 'sba@hbtn.com')
