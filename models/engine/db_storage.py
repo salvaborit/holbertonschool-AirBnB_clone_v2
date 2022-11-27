@@ -13,8 +13,11 @@ from sqlalchemy.orm.session import sessionmaker
 import os
 
 
-classes = {'User': User, 'Place': Place, 'Amenity': Amenity,
-            'State': State, 'City': City, 'Review': Review}
+classes = {
+        'User': User, 'Place': Place,
+        'Amenity': Amenity, 'State': State,
+        'City': City, 'Review': Review
+        }
 
 
 class DBStorage:

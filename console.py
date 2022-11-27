@@ -122,7 +122,7 @@ class HBNBCommand(cmd.Cmd):
         elif arg_arr[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        
+
         new_instance = HBNBCommand.classes[arg_arr[0]]()
         for arg in arg_arr:
             split = arg.split("=")
@@ -130,7 +130,7 @@ class HBNBCommand(cmd.Cmd):
                 continue
             key = split[0]
             value = eval(split[1])
-            
+
             if type(value) == str:
                 value = value.replace("_", " ")
             if (key in HBNBCommand.types):
@@ -334,6 +334,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
