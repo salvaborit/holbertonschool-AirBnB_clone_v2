@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """ Module for db storage engine """
-from models.base_model import BaseModel, Base
+from models.base_model import Base
 from models.user import User
 from models.state import State
 from models.city import City
@@ -9,7 +9,7 @@ from models.place import Place
 from models.review import Review
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session
-from sqlalchemy.orm.session import sessionmaker, Session
+from sqlalchemy.orm.session import sessionmaker
 import os
 
 
@@ -35,6 +35,7 @@ class DBStorage:
             pool_pre_ping=True)
 
         if mode == 'test':
+            print("entre")
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
@@ -66,4 +67,4 @@ class DBStorage:
         session = sessionmaker(
             bind=self.__engine,
             expire_on_commit=False)
-        self.__session = scoped_session(session)
+        self.__session = scoped_session(session)()
