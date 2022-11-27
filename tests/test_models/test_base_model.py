@@ -5,7 +5,6 @@ import unittest
 from datetime import datetime
 import json
 from os import remove
-from models import storage
 
 
 class test_basemodel(unittest.TestCase):
@@ -50,8 +49,7 @@ class test_basemodel(unittest.TestCase):
     def test_save(self):
         """ Testing save """
         i = self.value()
-        storage.new(i)
-        storage.save()
+        i.save()
         key = self.name + "." + i.id
         with open('file.json', 'r') as f:
             j = json.load(f)
