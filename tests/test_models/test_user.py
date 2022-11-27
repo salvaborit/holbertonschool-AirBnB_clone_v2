@@ -1,5 +1,7 @@
 #!/usr/bin/python3
-""" """
+"""Module for testing User model"""
+
+
 from tests.test_models.test_base_model import test_basemodel
 from models.user import User
 
