@@ -14,7 +14,7 @@ import os
 
 
 classes = { 'User': User, 'Place': Place,
-            'State': State, 'City': City}
+            'State': State, 'City': City, 'Review': Review}
 
 
 class DBStorage:
