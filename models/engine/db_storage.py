@@ -13,7 +13,7 @@ from sqlalchemy.orm.session import sessionmaker, Session
 import os
 
 
-classes = { 'User': User, 'Place': Place,
+classes = {'User': User, 'Place': Place, 'Amenity': Amenity,
             'State': State, 'City': City, 'Review': Review}
 
 
