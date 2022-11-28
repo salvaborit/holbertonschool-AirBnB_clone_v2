@@ -25,9 +25,11 @@ def c(text):
     return 'C ' + str(text.replace('_', ' '))
 
 
+@app.route('/python', defaults={'text': 'is cool'})
 @app.route('/python/<text>')
-def python(text='is cool'):
-    """Displays 'Python' followed by val of 'text' var on route '/python/<text>'"""
+def python(text):
+    """Displays 'Python' followed by val of
+    'text' var on route '/python/<text>'"""
     return 'Python ' + str(text.replace('_', ' '))
 
 
