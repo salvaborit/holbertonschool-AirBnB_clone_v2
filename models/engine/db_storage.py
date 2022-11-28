@@ -1,37 +1,26 @@
 #!/usr/bin/python3
 """ Module for db storage engine """
 from models.base_model import Base
-from models.user import User
-from models.state import State
-from models.city import City
-from models.amenity import Amenity
-from models.place import Place
-from models.review import Review
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session
 from sqlalchemy.orm.session import sessionmaker
-import os
+from os import getenv
 
 
-classes = {
-        'User': User, 'Place': Place,
-        'Amenity': Amenity, 'State': State,
-        'City': City, 'Review': Review
-        }
-
-
-class DBStorage:
+class DBStorage():
     """ Database storage class """
+
+
     __engine = None
     __session = None
 
     def __init__(self):
         """ Custom init method """
-        user = os.getenv('HBNB_MYSQL_USER')
-        password = os.getenv('HBNB_MYSQL_PWD')
-        host = os.getenv('HBNB_MYSQL_HOST')
-        database = os.getenv('HBNB_MYSQL_DB')
-        mode = os.getenv('HBNB_ENV')
+        user = getenv('HBNB_MYSQL_USER')
+        password = getenv('HBNB_MYSQL_PWD')
+        host = getenv('HBNB_MYSQL_HOST')
+        database = getenv('HBNB_MYSQL_DB')
+        mode = getenv('HBNB_ENV')
 
         self.__engine = create_engine(
             f"mysql+mysqldb://{user}:{password}@{host}/{database}",
@@ -42,8 +31,20 @@ class DBStorage:
 
     def all(self, cls=None):
         """ Returns objects stored in db """
-        obj_dic = {}
+        from models.user import User
+        from models.state import State
+        from models.city import City
+        from models.amenity import Amenity
+        from models.place import Place
+        from models.review import Review
 
+        classes = {
+                'User': User, 'Place': Place,
+                'Amenity': Amenity, 'State': State,
+                'City': City, 'Review': Review
+                }
+
+        obj_dic = {}
         if cls:
             for row in self.__session.query(cls).all():
                 obj_dic[f"{type(row).__name__}.{row.id}"] = row
@@ -55,6 +56,13 @@ class DBStorage:
 
     def new(self, obj):
         """ Adds object to session """
+        from models.user import User
+        from models.state import State
+        from models.city import City
+        from models.amenity import Amenity
+        from models.place import Place
+        from models.review import Review
+
         if obj is None:
             return
         self.__session.add(obj)
@@ -66,7 +74,11 @@ class DBStorage:
     def reload(self):
         """ Reloads """
         Base.metadata.create_all(self.__engine)
-        session = sessionmaker(
+        Session = sessionmaker(
             bind=self.__engine,
             expire_on_commit=False)
-        self.__session = scoped_session(session)()
+        self.__session = scoped_session(Session)()
+
+    def close(self):
+        """ """
+        self.__session.remove()
