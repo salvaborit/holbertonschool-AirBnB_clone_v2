@@ -33,11 +33,10 @@ def python(text):
     return 'Python ' + str(text.replace('_', ' '))
 
 
-@app.route('/number/<n>')
+@app.route('/number/<int:n>')
 def number(n):
     """Displays 'n is a number' only if 'n' var is an int"""
-    if type(n) is int:
-        return f'{n} is a number'
+    return f'{n} is a number'
 
 
 if __name__ == '__main__':
