@@ -38,7 +38,6 @@ class DBStorage:
             pool_pre_ping=True)
 
         if mode == 'test':
-            print("entre")
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
