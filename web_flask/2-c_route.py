@@ -16,9 +16,9 @@ def hbnb():
     return 'HBNB'
 
 
-@app.route(f'/c/{str(text)}', strict_slashes=False)
-def c():
-    return str(text)
+@app.route(f'/c/<text>', strict_slashes=False)
+def c(text):
+    return 'C ' + str(text)
 
 
 if __name__ == '__main__':
