@@ -51,7 +51,6 @@ class FileStorage():
         from models.amenity import Amenity
         from models.review import Review
 
-
         print('HERE IS THE ERROR')
         classes = {
             'BaseModel': BaseModel, 'User': User, 'Place': Place,
