@@ -10,7 +10,6 @@ from os import getenv
 class DBStorage():
     """ Database storage class """
 
-
     __engine = None
     __session = None
 

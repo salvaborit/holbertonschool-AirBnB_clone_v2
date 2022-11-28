@@ -13,7 +13,6 @@ class State(BaseModel, Base):
     __tablename__ = "states"
     name = Column(String(128), nullable=False)
 
-
     if type(storage) is not DBStorage:
 
         @property
@@ -22,7 +21,8 @@ class State(BaseModel, Base):
             from models.city import City
 
             city_list = []
-            for key, val in storage.all(City).items():
-                city_list.append(val)
+            for obj in storage.all(City).values():
+                if self.id == obj.id:
+                    city_list.append(obj)
 
             return city_list
