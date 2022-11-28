@@ -51,14 +51,16 @@ class FileStorage():
         from models.amenity import Amenity
         from models.review import Review
 
+
+        print('HERE IS THE ERROR')
         classes = {
             'BaseModel': BaseModel, 'User': User, 'Place': Place,
             'State': State, 'City': City, 'Amenity': Amenity,
             'Review': Review
         }
 
-        temp = {}
         try:
+            temp = {}
             with open(FileStorage.__file_path, 'r') as f:
                 temp = json.load(f)
                 for key, val in temp.items():
