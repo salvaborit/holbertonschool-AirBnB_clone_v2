@@ -4,7 +4,7 @@ from models.base_model import BaseModel
 import unittest
 from datetime import datetime
 import json
-from os import remove
+from os import remove, getenv
 
 
 class test_basemodel(unittest.TestCase):
@@ -46,6 +46,7 @@ class test_basemodel(unittest.TestCase):
         with self.assertRaises(TypeError):
             new = BaseModel(**copy)
 
+    @unittest.skipIf(getenv('HBNB_TYPE_STORAGE') == 'db', "Skip")
     def test_save(self):
         """ Testing save """
         i = self.value()
