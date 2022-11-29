@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""This module instantiates an object of class FileStorage"""
+"""Module that selects engine and reloads data from storage"""
 
 
 import os
