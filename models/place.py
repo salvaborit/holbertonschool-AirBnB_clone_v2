@@ -1,20 +1,20 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
 from models.base_model import BaseModel, Base
+from sqlalchemy import Column, String, ForeignKey, Integer, Float, Table
+from sqlalchemy.orm import relationship
 from models.review import Review
 from models.amenity import Amenity
-from sqlalchemy import Column, String, Integer, Float, ForeignKey, Table
-from sqlalchemy.orm import relationship
 from os import getenv
 
-place_amenity_table = Table(
-        'place_amenity', Base.metadata,
-        Column(
-            'place_id', String(60), ForeignKey('places.id'),
-            primary_key=True, nullable=False),
-        Column(
-            'amenity_id', String(60), ForeignKey('amenities.id'),
-            primary_key=True, nullable=False))
+
+association_table = Table(
+    "place_amenity",
+    Base.metadata,
+    Column("place_id", String(60), ForeignKey("places.id"), primary_key=True,
+           onupdate='CASCADE', nullable=False),
+    Column("amenity_id", String(60), ForeignKey("amenities.id"),
+           primary_key=True, onupdate='CASCADE', nullable=False))
 
 
 class Place(BaseModel, Base):
@@ -24,40 +24,42 @@ class Place(BaseModel, Base):
     user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
     name = Column(String(128), nullable=False)
     description = Column(String(1024), nullable=True)
-    number_rooms = Column(Integer, nullable=False, default=0)
-    number_bathrooms = Column(Integer, nullable=False, default=0)
-    max_guest = Column(Integer, nullable=False, default=0)
-    price_by_night = Column(Integer, nullable=False, default=0)
+    number_rooms = Column(Integer, default=0, nullable=False)
+    number_bathrooms = Column(Integer, default=0, nullable=False)
+    max_guest = Column(Integer, default=0, nullable=False)
+    price_by_night = Column(Integer, default=0, nullable=False)
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
+
     amenity_ids = []
 
-    if (getenv('HBNB_TYPE_STORAGE') == 'db'):
-        reviews = relationship(
-            'Review', cascade='all, delete', backref='place')
-        amenities = relationship(
-            'Amenity', secondary='place_amenity',
-            viewonly=False, overlaps="place_amenities")
+    if getenv('HBNB_TYPE_STORAGE') == 'db':
+        reviews = relationship('Review', backref='places', cascade='delete')
+        amenities = relationship('Amenity', secondary='place_amenity',
+                                 viewonly=False)
     else:
+
         @property
         def reviews(self):
-            list_rev = []
+            """Returns list of reviews associated with place"""
             from models import storage
-            for review in storage.all(Review).values():
-                if review.place_id == self.id:
-                    list_rev.append(review)
+            my_list = []
+            for i in storage.all(Review):
+                if self.id == i.place_id:
+                    my_list.append(i)
+            return my_list
 
         @property
         def amenities(self):
-            list_ame = []
+            """Returns list of amenities associated with place"""
             from models import storage
-            for amenity in storage.all(Amenity).values():
-                if amenity.id in self.amenity_ids:
-                    list_ame.append(amenity)
-            return list_ame
+            my_list = []
+            for i in storage.all(Amenity).values():
+                if i.id in self.amenity_ids:
+                    my_list.append(i)
+            return my_list
 
         @amenities.setter
-        def amenities(self, ame):
-            if 'Amenity' not in type(ame):
-                return
-            self.amenity_ids.append(ame.id)
+        def amenities(self, value):
+            if type(value) == Amenity:
+                self.amenity_ids.append(value.id)

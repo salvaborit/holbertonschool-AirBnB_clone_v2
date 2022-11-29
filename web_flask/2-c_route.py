@@ -1,28 +1,30 @@
 #!/usr/bin/python3
-"""Task 2"""
+"""
+Module c_route
+"""
 from flask import Flask
 
 
 app = Flask(__name__)
+app.url_map.strict_slashes = False
 
 
-@app.route('/', strict_slashes=False)
-def index():
-    """Displays 'Hello HBNB!' on route '/'"""
-    return 'Hello HBNB!'
+@app.route("/")
+def hello_hbnb():
+    return "Hello HBNB!"
 
 
-@app.route('/hbnb', strict_slashes=False)
-def hbnb():
-    """Displays 'HBNB' on route '/hbnb'"""
-    return 'HBNB'
+@app.route("/hbnb")
+def hbnb_hello():
+        return "HBNB"
 
 
-@app.route('/c/<text>', strict_slashes=False)
-def c(text):
-    """Displays 'C' followed by val of 'text' var on route '/c/<text>'"""
-    return 'C ' + str(text.replace('_', ' '))
+@app.route("/c/<text>")
+def c_route(text):
+        res = text.replace('_', ' ')
+        return "C " + res
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+        app.run(host=('0.0.0.0'),
+                port=int('5000'), threaded=True)

@@ -1,5 +1,7 @@
 #!/usr/bin/python3
-"""Task 3"""
+"""
+Module python_route
+"""
 from flask import Flask
 
 
@@ -7,31 +9,29 @@ app = Flask(__name__)
 app.url_map.strict_slashes = False
 
 
-@app.route('/')
-def index():
-    """Displays 'Hello HBNB!' on route '/'"""
-    return 'Hello HBNB!'
+@app.route("/")
+def hello_hbnb():
+    return "Hello HBNB!"
 
 
-@app.route('/hbnb')
-def hbnb():
-    """Displays 'HBNB' on route '/hbnb'"""
-    return 'HBNB'
+@app.route("/hbnb")
+def hbnb_hello():
+        return "HBNB"
 
 
-@app.route('/c/<text>')
-def c(text):
-    """Displays 'C' followed by val of 'text' var on route '/c/<text>'"""
-    return 'C ' + str(text.replace('_', ' '))
+@app.route("/c/<text>")
+def c_route(text):
+        res = text.replace('_', ' ')
+        return "C " + res
 
 
-@app.route('/python', defaults={'text': 'is cool'})
-@app.route('/python/<text>')
-def python(text):
-    """Displays 'Python' followed by val of
-    'text' var on route '/python/<text>'"""
-    return 'Python ' + str(text.replace('_', ' '))
+@app.route("/python")
+@app.route("/python/<text>")
+def python_route(text="is cool"):
+        res = text.replace('_', ' ')
+        return "Python " + res
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+        app.run(host=('0.0.0.0'),
+                port=int('5000'), threaded=True)

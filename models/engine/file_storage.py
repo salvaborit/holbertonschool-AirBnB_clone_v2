@@ -1,32 +1,22 @@
 #!/usr/bin/python3
 """This module defines a class to manage file storage for hbnb clone"""
-
-
 import json
 
 
-class FileStorage():
+class FileStorage:
     """This class manages storage of hbnb models in JSON format"""
     __file_path = 'file.json'
     __objects = {}
 
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
-        if cls:
-            return {key: val
-                    for key, val in self.all().items() if type(val) == cls}
-
+        if cls is not None:
+            my_dict = {}
+            for key, value in self.__objects.items():
+                if cls == type(value):
+                    my_dict[key] = value
+            return my_dict
         return FileStorage.__objects
-
-    def delete(self, obj=None):
-        """ Deletes obj if it exists """
-        if obj:
-            objs = self.all()
-            for key, val in objs.items():
-                if val == obj:
-                    key_to_del = key
-                    break
-            del objs[key_to_del]
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
@@ -51,13 +41,11 @@ class FileStorage():
         from models.amenity import Amenity
         from models.review import Review
 
-        print('HERE IS THE ERROR')
         classes = {
-            'BaseModel': BaseModel, 'User': User, 'Place': Place,
-            'State': State, 'City': City, 'Amenity': Amenity,
-            'Review': Review
-        }
-
+                    'BaseModel': BaseModel, 'User': User, 'Place': Place,
+                    'State': State, 'City': City, 'Amenity': Amenity,
+                    'Review': Review
+                  }
         try:
             temp = {}
             with open(FileStorage.__file_path, 'r') as f:
@@ -67,7 +55,14 @@ class FileStorage():
         except FileNotFoundError:
             pass
 
+    def delete(self, obj=None):
+        """Delete object"""
+        try:
+            del self.__objects["{}.{}".format(type(obj).__name__, obj.id)]
+        except Exception:
+            pass
+
     def close(self):
-        """Deserializes the JSON file to objects"""
+        """Method for deserializing the JSON file to objects"""
         from . import reload
         reload()

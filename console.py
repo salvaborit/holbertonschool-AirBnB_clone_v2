@@ -115,31 +115,21 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        arg_arr = args.split()
-        if not args or not arg_arr[0]:
-            print("** class name missing **")
-            return
-        elif arg_arr[0] not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-            return
-
-        new_instance = HBNBCommand.classes[arg_arr[0]]()
-        for arg in arg_arr:
-            split = arg.split("=")
-            if len(split) < 2:
-                continue
-            key = split[0]
-            value = eval(split[1])
-
-            if type(value) == str:
-                value = value.replace("_", " ")
-            if (key in HBNBCommand.types):
-                if (type(value) == HBNBCommand.types[key]):
-                    setattr(new_instance, key, value)
-            else:
-                setattr(new_instance, key, value)
-        new_instance.save()
+        if not args:
+            raise SyntaxError("Error of syntax")
+        first_split = args.split(' ')
+        kwargs = {}
+        for i in range(1, len(first_split)):
+            key, value = tuple(first_split[i].split('='))
+            if value[0] == '"':
+                value = value.strip('"').replace('_', ' ')
+            kwargs[key] = value
+        if kwargs == {}:
+            new_instance = eval(first_split[0])()
+        else:
+            new_instance = eval(first_split[0])(**kwargs)
         print(new_instance.id)
+        new_instance.save()
 
     def help_create(self):
         """ Help information for the create method """
@@ -229,6 +219,7 @@ class HBNBCommand(cmd.Cmd):
                 print_list.append(str(v))
 
         print(print_list)
+        return print_list
 
     def help_all(self):
         """ Help information for the all command """

@@ -7,14 +7,18 @@ from models.city import City
 class test_City(test_basemodel):
     """ """
 
-    def setUp(self):
+    def __init__(self, *args, **kwargs):
         """ """
-        self.city = City(name='Miami', state_id='dummy')
+        super().__init__(*args, **kwargs)
+        self.name = "City"
+        self.value = City
 
     def test_state_id(self):
         """ """
-        self.assertEqual(type(self.city.state_id), str)
+        new = self.value()
+        self.assertNotEqual(type(new.state_id), str)
 
     def test_name(self):
         """ """
-        self.assertEqual(type(self.city.name), str)
+        new = self.value()
+        self.assertNotEqual(type(new.name), str)

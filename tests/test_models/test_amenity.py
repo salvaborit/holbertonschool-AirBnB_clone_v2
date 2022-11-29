@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""Module for testing Amenity model"""
+""" """
 from tests.test_models.test_base_model import test_basemodel
 from models.amenity import Amenity
 
@@ -7,10 +7,13 @@ from models.amenity import Amenity
 class test_Amenity(test_basemodel):
     """ """
 
-    def setUp(self):
+    def __init__(self, *args, **kwargs):
         """ """
-        self.amenity = Amenity(name='dummy')
+        super().__init__(*args, **kwargs)
+        self.name = "Amenity"
+        self.value = Amenity
 
     def test_name2(self):
         """ """
-        self.assertEqual(type(self.amenity.name), str)
+        new = self.value()
+        self.assertNotEqual(type(new.name), str)

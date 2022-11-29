@@ -1,12 +1,12 @@
 #!/usr/bin/python3
-""" Module for testing file storage"""
-
-
+"""
+Module for testing db_storage
+"""
 import unittest
 
 
-class test_db_storage(unittest.TestCase):
-    """ Class to test the file storage method """
-
+class test_dbstorage(unittest.TestCase):
+    """Class for testing db_storage"""
     def test_dbstorage(self):
+        """Testing db_storage"""
         self.assertEqual(1, 1)
