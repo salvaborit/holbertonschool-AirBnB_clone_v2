@@ -20,7 +20,7 @@ def states_list():
     from flask import render_template
     return render_template(
         '7-states_list.html',
-        states=storage.all("State").values()
+        state_list=storage.all("State").values()
     )
 
 
