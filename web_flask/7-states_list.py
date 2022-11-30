@@ -26,7 +26,8 @@ def states_list():
 
     print(state_list)
 
-    return render_template('7-states_list.html', state_list=storage.all(State).values())
+    return render_template('7-states_list.html',
+                           state_list=storage.all(State).values())
 
 
 if __name__ == '__main__':
