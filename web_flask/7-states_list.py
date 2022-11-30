@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """ Module 7-states_list.py """
-from flask import Flask, render_template
-from models import storage
+from flask import Flask
+
 
 app = Flask(__name__)
 
@@ -9,12 +9,15 @@ app = Flask(__name__)
 @app.teardown_appcontext
 def teardown_db(exception):
     """ remove the current SQLAlchemy Session """
+    from models import storage
     storage.close()
 
 
 @app.route('/states_list', strict_slashes=False)
 def states_list():
     """ Renders all states """
+    from models import storage
+    from flask import render_template
     return render_template(
         '7-states_list.html',
         states=storage.all("State").values()
