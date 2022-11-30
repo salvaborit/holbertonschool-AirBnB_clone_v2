@@ -17,11 +17,16 @@ def teardown_db(exception):
 def states_list():
     """ Renders all states """
     from models import storage
+    from models.state import State
     from flask import render_template
-    return render_template(
-        '7-states_list.html',
-        state_list=storage.all("State").values()
-    )
+
+    state_list = []
+    for i in storage.all(State).values():
+        state_list.append(str(i.name))
+
+    print(state_list)
+
+    return render_template('7-states_list.html', state_list=storage.all(State).values())
 
 
 if __name__ == '__main__':
