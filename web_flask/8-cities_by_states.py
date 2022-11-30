@@ -21,7 +21,7 @@ def cities_by_states():
     from models.city import City
     from flask import render_template
 
-    return render_template('7-states_list.html',
+    return render_template('8-cities_by_states.html',
                            state_list=storage.all(State).values(),
                            city_list=storage.all(City).values())
 
