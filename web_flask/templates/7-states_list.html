@@ -6,11 +6,11 @@
     <BODY>
         <H1>States</H1>
         <UL>
-
-        {% for s in st.values() %}
-            <LI>{{ s.id }}: <B>{{ s.name }}</B></LI>
-        {% endfor %}
-
+            {% for s in st.values() %}
+            <LI>
+                {{ s.id }}: <B>{{ s.name }}</B>
+            </LI>
+            {% endfor %}
         </UL>
     </BODY>
 </HTML>
