@@ -13,8 +13,8 @@ app.url_map.strict_slashes = False
 def states():
     from models import storage
     from models.state import State
-    states = storage.all(State)
-    return render_template('9-states.html', states=states)
+    return render_template("9-states.html",
+                           states=storage.all(State))
 
 
 @app.route("/states/<id>")
@@ -22,16 +22,17 @@ def state_cities(id):
     from models import storage
     from models.state import State
     from models.city import City
-    cities = storage.all(City)
-    states = storage.all(State)
-    for st in states.values():
+    for state in storage.all(State).values():
         state_name = False
-        if st.id == id:
-            state_name = st.name
+        if state.id == id:
+            state_name = state.name
             break
 
-    return render_template('9-states.html',
-                           states=states, cities=cities, state_id=id, state_name=state_name)
+    return render_template("9-states.html",
+                           states=storage.all(State),
+                           cities=storage.all(City),
+                           state_id=id,
+                           state_name=state_name)
 
 
 @app.teardown_appcontext
